@@ -90,24 +90,24 @@ const MyAssignmentsPage = () => {
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-lg">
-                    {assignment.project ? (
-  <Link 
-    to={`/dashboard/projects/${assignment.project._id}`}
-    className="hover:text-blue-600 transition-colors"
-  >
-    {assignment.project.name}
-  </Link>
-) : (
-  <span className="text-gray-400 italic">Project not available</span>
-)}
+                    {assignment.projectId ? (
+                      <Link 
+                        to={`/dashboard/projects/${assignment.projectId._id}`}
+                        className="hover:text-blue-600 transition-colors"
+                      >
+                        {assignment.projectId.name}
+                      </Link>
+                    ) : (
+                      <span className="text-gray-400 italic">Project not available</span>
+                    )}
                   </CardTitle>
-                  {assignment.project?.status ? (
-  <Badge variant={getStatusBadgeVariant(assignment.project.status)}>
-    {assignment.project.status}
-  </Badge>
-) : (
-  <Badge variant="secondary">Unknown</Badge>
-)}
+                  {assignment.projectId?.status ? (
+                    <Badge variant={getStatusBadgeVariant(assignment.projectId.status)}>
+                      {assignment.projectId.status}
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary">Unknown</Badge>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -142,37 +142,37 @@ const MyAssignmentsPage = () => {
                 </div>
 
                 {/* Project Manager */}
-               {assignment.project?.manager?.name ? (
-  <div className="flex justify-between">
-    <span className="text-sm text-gray-600">Manager:</span>
-    <span className="text-sm font-medium">{assignment.project.manager.name}</span>
-  </div>
-) : null}
+                {assignment.projectId?.managerId?.name ? (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Manager:</span>
+                    <span className="text-sm font-medium">{assignment.projectId.managerId.name}</span>
+                  </div>
+                ) : null}
 
                 {/* Project Priority */}
-             {assignment.project?.priority && (
-  <div className="flex justify-between">
-    <span className="text-sm text-gray-600">Priority:</span>
-    <Badge 
-      variant={
-        assignment.project.priority === 'high' ? 'destructive' : 
-        assignment.project.priority === 'medium' ? 'default' : 'secondary'
-      }
-      className="text-xs"
-    >
-      {assignment.project.priority}
-    </Badge>
-  </div>
-)}
+                {assignment.projectId?.priority && (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Priority:</span>
+                    <Badge 
+                      variant={
+                        assignment.projectId.priority === 'high' ? 'destructive' : 
+                        assignment.projectId.priority === 'medium' ? 'default' : 'secondary'
+                      }
+                      className="text-xs"
+                    >
+                      {assignment.projectId.priority}
+                    </Badge>
+                  </div>
+                )}
 
                 {/* Project Description */}
-                {assignment.project?.description && (
-  <div className="pt-2 border-t">
-    <p className="text-sm text-gray-600 line-clamp-2">
-      {assignment.project.description}
-    </p>
-  </div>
-)}
+                {assignment.projectId?.description && (
+                  <div className="pt-2 border-t">
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {assignment.projectId.description}
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
