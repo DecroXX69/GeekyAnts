@@ -38,10 +38,10 @@ const getAssignments = async (req, res) => {
    const assignments = await Assignment.find(filter)
   .populate('engineerId', 'name email skills seniority')
   .populate({
-    path: 'projectId',
-    select: 'name description status startDate endDate managerId',
-    populate: { path: 'managerId', select: 'name email' } // 👈 this line is the fix
-  })
+  path: 'projectId',
+  select: 'name description status startDate endDate managerId priority', // Added priority
+  populate: { path: 'managerId', select: 'name email' }
+})
   .sort({ startDate: -1 });
 
 
