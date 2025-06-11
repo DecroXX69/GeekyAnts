@@ -19,13 +19,13 @@ const EngineerDashboard = () => {
   const { user } = useContext(AuthContext)
   
   const { data: availability, loading: availabilityLoading, error: availabilityError } = 
-    useFetch(`/engineers/${user?.id}/availability`)
-  
-  const { data: assignments, loading: assignmentsLoading, error: assignmentsError } = 
-    useFetch(`/assignments?engineerId=${user?.id}`)
+  useFetch(`/engineers/${user?._id}/availability`) // Changed from user?.id to user?._id
 
-  const { data: capacity, loading: capacityLoading, error: capacityError } = 
-    useFetch(`/engineers/${user?.id}/capacity`)
+const { data: assignments, loading: assignmentsLoading, error: assignmentsError } = 
+  useFetch(`/assignments?engineerId=${user?._id}`) // Changed from user?.id to user?._id
+
+const { data: capacity, loading: capacityLoading, error: capacityError } = 
+  useFetch(`/engineers/${user?._id}/capacity`) // Changed from user?.id to user?._id
 
   const loading = availabilityLoading || assignmentsLoading || capacityLoading
   const error = availabilityError || assignmentsError || capacityError
