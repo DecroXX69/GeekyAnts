@@ -1,21 +1,24 @@
-// src/config/db.js
-const mongoose = require('mongoose');
+// File: src/config/db.js
+require('dotenv').config()
+const mongoose = require('mongoose')
 
 const connectDB = async () => {
+  const uri = process.env.MONGODB_URI
+  if (!uri) {
+    console.error('MONGODB_URI not defined in environment')
+    process.exit(1)
+  }
   try {
-    const uri = process.env.MONGODB_URI;
-    if (!uri) {
-      throw new Error('MONGODB_URI not set in environment');
-    }
     await mongoose.connect(uri, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
+      useUnifiedTopology: true
+      // other options if needed
+    })
+    console.log('MongoDB connected')
   } catch (err) {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
+    console.error('MongoDB connection error:', err)
+    process.exit(1)
   }
-};
+}
 
-module.exports = connectDB;
+module.exports = connectDB

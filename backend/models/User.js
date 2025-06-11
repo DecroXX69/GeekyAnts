@@ -1,3 +1,8 @@
+// File: models/User.js
+/**
+ * User model: defines schema for both engineers and managers,
+ * with authentication and profile fields.
+ */
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -5,7 +10,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true,    // unique index created here
     trim: true,
     lowercase: true
   },
@@ -37,7 +42,7 @@ const userSchema = new Schema({
   maxCapacity: {
     type: Number,
     default: 100,
-    min: 0,
+    min: 1,    // ensure at least 1% capacity if engineer; if you allow 0, change accordingly
     max: 100
   },
   department: {
@@ -48,8 +53,8 @@ const userSchema = new Schema({
   timestamps: true
 });
 
-// Indexes
-userSchema.index({ email: 1 });
+// Indexes for efficient querying by role and skills
+// (Remove the explicit email index because `unique: true` on email adds it already)
 userSchema.index({ role: 1 });
 userSchema.index({ skills: 1 });
 

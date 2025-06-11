@@ -10,6 +10,13 @@ const Assignment = require('../models/Assignment');
 async function seedData() {
   try {
     // Connect to MongoDB
+    console.log('MONGODB_URI=', process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB');
 

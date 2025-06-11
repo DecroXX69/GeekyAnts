@@ -8,42 +8,51 @@ const Assignment = require('../models/Assignment');
  * Query params: status, startDate, endDate
  * Returns projects populated with manager info
  */
+// In src/controllers/projectsController.js (or equivalent)
 const getProjects = async (req, res) => {
   try {
     const { status, startDate, endDate } = req.query;
     const filter = {};
 
-    // If manager, can filter all projects by status/date
-    // If engineer, restrict to projects where they have assignments
-    if (req.user.role === 'engineer') {
-      // find assignments for this engineer
-      const assignments = await Assignment.find({ engineerId: req.user.userId });
-      const projectIds = assignments.map(a => a.projectId);
-      if (projectIds.length === 0) {
-        return res.json([]); // no projects assigned
-      }
-      filter._id = { $in: projectIds };
-    }
-    // Apply status filter only for manager or engineer on assigned projects:
+    // Handle status filter: allow single or multiple statuses
     if (status) {
-      filter.status = status;
+      if (Array.isArray(status)) {
+        // ?status=planning&status=active  => status is array
+        filter.status = { $in: status };
+      } else if (typeof status === 'string' && status.includes(',')) {
+        // ?status=planning,active
+        const arr = status.split(',').map(s => s.trim()).filter(Boolean);
+        if (arr.length > 0) {
+          filter.status = { $in: arr };
+        }
+      } else {
+        // single status
+        filter.status = status;
+      }
     }
-    // Date range filter as before
+
+    // Date range filtering remains unchanged
     if (startDate || endDate) {
       filter.$and = [];
-      if (startDate) filter.$and.push({ endDate: { $gte: new Date(startDate) } });
-      if (endDate) filter.$and.push({ startDate: { $lte: new Date(endDate) } });
+      if (startDate) {
+        filter.$and.push({ endDate: { $gte: new Date(startDate) } });
+      }
+      if (endDate) {
+        filter.$and.push({ startDate: { $lte: new Date(endDate) } });
+      }
     }
 
     const projects = await Project.find(filter)
       .populate('managerId', 'name email')
       .sort({ startDate: -1 });
+
     res.json(projects);
   } catch (error) {
     console.error('Get projects error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 /**

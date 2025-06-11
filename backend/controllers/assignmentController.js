@@ -35,10 +35,15 @@ const getAssignments = async (req, res) => {
     }
     // else: if other roles, adjust accordingly
 
-    const assignments = await Assignment.find(filter)
-      .populate('engineerId', 'name email skills seniority')
-      .populate('projectId', 'name description status startDate endDate')
-      .sort({ startDate: -1 });
+   const assignments = await Assignment.find(filter)
+  .populate('engineerId', 'name email skills seniority')
+  .populate({
+    path: 'projectId',
+    select: 'name description status startDate endDate managerId',
+    populate: { path: 'managerId', select: 'name email' } // 👈 this line is the fix
+  })
+  .sort({ startDate: -1 });
+
 
     res.json(assignments);
   } catch (error) {
