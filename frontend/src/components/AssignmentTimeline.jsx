@@ -31,7 +31,7 @@ const AssignmentTimeline = ({ assignments }) => {
   ]
   const projectColors = {}
   assignments.forEach((assignment, index) => {
-    const projectId = assignment.projectId || assignment.project?._id
+    const projectId = assignment.projectId?._id || assignment.projectId
     if (!projectColors[projectId]) {
       projectColors[projectId] = colors[Object.keys(projectColors).length % colors.length]
     }
@@ -54,8 +54,8 @@ const AssignmentTimeline = ({ assignments }) => {
             const leftPercent = (offsetDays / totalDays) * 100
             const widthPercent = (durationDays / totalDays) * 100
             
-            const projectId = assignment.projectId || assignment.project?._id
-            const projectName = assignment.project?.name || `Project ${projectId}`
+            const projectId = assignment.projectId?._id || assignment.projectId
+            const projectName = assignment.projectId?.name || 'Unknown Project'
             const bgColor = projectColors[projectId] || colors[0]
 
             return (
@@ -90,9 +90,9 @@ const AssignmentTimeline = ({ assignments }) => {
         <div className="flex flex-wrap gap-2">
           {Object.entries(projectColors).map(([projectId, color]) => {
             const assignment = assignments.find(a => 
-              (a.projectId || a.project?._id) === projectId
+              (a.projectId?._id || a.projectId) === projectId
             )
-            const projectName = assignment?.project?.name || `Project ${projectId}`
+            const projectName = assignment?.projectId?.name || 'Unknown Project'
             
             return (
               <div key={projectId} className="flex items-center gap-2">
