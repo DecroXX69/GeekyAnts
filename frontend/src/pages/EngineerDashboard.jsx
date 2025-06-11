@@ -44,7 +44,7 @@ const { data: capacity, loading: capacityLoading, error: capacityError } =
 
   // Process assignments for chart data
   const chartData = assignments?.map(assignment => ({
-    project: assignment.project?.name || 'Unknown Project',
+    project: assignment.projectId?.name || 'Unknown Project',
     allocation: assignment.allocationPercentage,
     role: assignment.role
   })) || []
@@ -115,12 +115,12 @@ const { data: capacity, loading: capacityLoading, error: capacityError } =
             <div className="space-y-4">
               {assignments.map((assignment) => (
                 <div 
-                  key={assignment.id} 
+                  key={assignment._id} 
                   className="flex items-center justify-between p-4 border rounded-lg"
                 >
                   <div className="flex-1">
                     <h4 className="font-semibold text-lg">
-                      {assignment.project?.name || 'Unknown Project'}
+                      {assignment.projectId?.name || 'Unknown Project'}
                     </h4>
                     <p className="text-sm text-gray-600 mb-2">
                       {formatDate(assignment.startDate)} - {formatDate(assignment.endDate)}
@@ -135,11 +135,11 @@ const { data: capacity, loading: capacityLoading, error: capacityError } =
                   <div className="text-right">
                     <Badge 
                       variant={
-                        assignment.project?.status === 'active' ? 'default' :
-                        assignment.project?.status === 'planning' ? 'secondary' : 'outline'
+                        assignment.projectId?.status === 'active' ? 'default' :
+                        assignment.projectId?.status === 'planning' ? 'secondary' : 'outline'
                       }
                     >
-                      {assignment.project?.status || 'Unknown'}
+                      {assignment.projectId?.status || 'Unknown'}
                     </Badge>
                   </div>
                 </div>
